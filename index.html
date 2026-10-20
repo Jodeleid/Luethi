@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Manufacturing+Consent&family=Libre+Caslon+Display&display=swap" rel="stylesheet">
+    <style>
+      * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      }
+      body {
+        background-color: #000004;
+        color: beige;
+        min-height: 200svh; /*extra height*/
+        }
+        .eventTrigger {
+          font-size: 30px;
+          font-family: 'Manufacturing Consent';
+          position: fixed;
+          color: #bb852f;
+          display: flex;
+          cursor: pointer;
+          align-items: center;
+          justify-content: center;
+          min-width: 100svw;
+          min-height: 100svh;
+          z-index: 10000;
+          background-color: #000004;
+        }
+        .eventTrigger.hidden {
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+        }
+        .intro-box {
+          color: #8b0000;
+          font-family: 'Manufacturing Consent', sans-serif;
+          text-align: center;
+        }
+        .line-1, .line-2 {
+          font-size: 30px;
+          opacity: 0;
+          animation-fill-mode: both;
+        }
+        .animating .line-1 {
+          animation-name: fadeInOut;
+          animation-duration: 6s;
+          animation-delay: 0s;
+        }
+        .animating .line-2 {
+          animation-name: fadeIn;
+          animation-delay: 6s;
+          animation-duration: 3s;
+        }
+        .curtain {
+          z-index: 9999;
+          position: fixed;
+          inset: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          opacity: 1;
+          visibility: visible;
+          transition: opacity 3s ease, visibility 3s; /* do not touch or the fadeout fucking explodes*/
+          background-color: #000004;
+        }
+        .curtain.hidden {
+          opacity: 0;
+          visibility: hidden;
+          pointer-events: none;
+        }
+        .layout {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          max-width: calc(60vw - 40px);
+          z-index: 20;
+          position: relative;
+          margin: 40px;
+          .col-a {
+            color: #bb852f;
+            font-family: 'Manufacturing Consent', sans-serif;
+            font-size: 40px;
+            padding: 20px;
+          }
+          .col-b {
+            color:antiquewhite;
+            font-family: 'Libre Caslon Display', serif;
+            padding: 20px;
+          }
+        }
+          .portrait-rail {
+          position: fixed;
+          top: 0;
+          right: 0;
+          width: 40vw;
+          height: 100svh;
+          z-index: 10;
+          pointer-events: none;
+        }
+        .margaret {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          display: block;
+        }
+        @media (max-width: 600px) {
+          .layout {
+            max-width: 100%;
+            margin: 20px 16px;
+            grid-template-columns: 1fr;
+          }
+          .portrait-rail {
+            position: relative;
+            width: 100%;
+            height: 50svh;
+          }
+        }
+        @keyframes fadeInOut {
+          0% {opacity: 0;}
+          30% {opacity: 1;}
+          70% {opacity: 1;}
+          100% {opacity: 0;}
+        }
+        @keyframes fadeIn {
+          0% {opacity: 0;}
+          30% {opacity: 1;}
+          70% {opacity: 1;}
+          100% {opacity: 1;}
+        }
+    </style>
+</head>
+<body>
+  <p class="eventTrigger">[ Click and Wake Up.]</p>
+  <aside class="portrait-rail">
+    <img class="margaret" src="image/download.jpg" alt="Margaret">
+  </aside>
+   <div class="curtain">
+     <div class="intro-box">
+       <p class="line-1">Dost thou recognize the ashes from their mouths, Johannes?</p>
+       <p class="line-2">They are thy deads.</p>
+       </div>
+  </div>
+  <div class="layout">
+    <div class="col-a">Lo, Heilige Joachim, I am with you alway.</div>
+    <div class="col-b">Heiner, my beloved.</div>
+  </div>
+<script>
+
+// Put reuseable tool functions here!!1!
+const AFadeIn = (audio, durationMs = 2000, targetVolume = 1) => {
+  audio.volume = 0;
+  audio.play().catch(() => {});
+  const stepTime = 50;
+  const steps = durationMs / stepTime;
+  const volumeIncrement = targetVolume / steps;
+  const timer = setInterval(() => {
+    if (audio.volume + volumeIncrement < targetVolume) {
+      audio.volume += volumeIncrement;
+    } else {
+      audio.volume = targetVolume;
+      clearInterval(timer);
+    }
+  }, stepTime);
+};
+
+const AFadeOut = (audio, durationMs = 2000) => {
+  const stepTime = 50;
+  const steps = durationMs / stepTime;
+  const volumeDecrement = audio.volume / steps;
+  const timer = setInterval(() => {
+    if (audio.volume - volumeDecrement > 0) {
+      audio.volume -= volumeDecrement;
+    } else {
+      audio.volume = 0;
+      audio.pause();
+      clearInterval(timer);
+    }
+  }, stepTime);
+};
+
+// Dom elements and audio assets
+const bell = new Audio('audio/confbth.mp3');
+const seawaves = new Audio ('audio/Seawaves.mp3');
+const eventTrigger = document.querySelector('.eventTrigger');
+const curtain = document.querySelector('.curtain');
+
+// actions and handlers
+const dismisseventTrigger = () => {
+  clearTimeout(autoTimer)
+};
+const dismissCurtain = () => {
+  curtain.classList.add('hidden');
+  AFadeOut (seawaves, 3000);
+  bell.play();
+};
+
+// timers and event listeners
+let autoTimer;
+
+eventTrigger.addEventListener('click', () => {
+  eventTrigger.classList.add('hidden');
+  AFadeIn(seawaves, 3000, 0.7);
+  curtain.classList.add('animating');
+  autoTimer = setTimeout (dismissCurtain, 9000)}, {once: true});
+curtain.addEventListener('click', () => {
+  clearTimeout(autoTimer);
+  dismissCurtain();}, {once: true})
+</script>
+</body>
+</html>
