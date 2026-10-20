@@ -192,8 +192,8 @@ const AFadeOut = (audio, durationMs = 2000) => {
 };
 
 // Dom elements and audio assets
-const bell = new Audio('audio/confbth.mp3');
-const seawaves = new Audio ('audio/Seawaves.mp3');
+const bell = new Audio('audio/confbth.mp3'); bell.preload = 'auto'; bell.load();
+const seawaves = new Audio ('audio/Seawaves.mp3'); seawaves.preload = 'auto'; seawaves.load();
 const eventTrigger = document.querySelector('.eventTrigger');
 const curtain = document.querySelector('.curtain');
 
