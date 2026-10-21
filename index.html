@@ -113,7 +113,7 @@
           }
 
         }
-          .portrait-rail {
+        .portrait-rail {
           position: fixed;
           top: 0;
           right: 0;
@@ -122,12 +122,30 @@
           z-index: 10;
           pointer-events: none;
         }
+        .portrait-caption {
+          position: absolute;
+          bottom: 24px;
+          right: 32px;
+          color: #bb852f;
+          font-family: 'BickhamScript', cursive;
+          font-size: 40px;
+          letter-spacing: 1px;
+          opacity: 0.75;
+          z-index: 2;
+        }
         .margaret {
           width: 100%;
           height: 100%;
           object-fit: cover;
           object-position: center;
           display: block;
+        }
+        @font-face {
+          font-family: 'BickhamScript';
+          src: url('fonts/BickhamScriptPro-Regular.woff2') format('woff2');
+          font-weight: normal;
+          font-style: normal;
+          font-display: swap;
         }
         @media (max-width: 600px) {
           .materialize.layout {
@@ -163,6 +181,7 @@
   <p class="eventTrigger">[ Click and Wake Up.]</p>
   <aside class="portrait-rail">
     <img class="margaret" src="image/download.jpg" alt="Margaret">
+    <p class="portrait-caption">Johannes, tears laid on earth.</p>
   </aside>
    <div class="curtain">
      <div class="intro-box">
