@@ -20,7 +20,6 @@
       body {
         background-color: #000004;
         color: beige;
-        min-height: 200svh; /*extra height*/
         }
         .eventTrigger {
           font-size: 30px;
@@ -80,7 +79,7 @@
           visibility: hidden;
           pointer-events: none;
         }
-        .layout {
+        .materialize.layout {
           display: flex;
           flex-direction: column;
           gap: 20px;
@@ -88,6 +87,7 @@
           z-index: 20;
           position: relative;
           margin: 40px;
+          min-height: 200svh;
           .col-a {
             color: #bb852f;
             font-family: 'Manufacturing Consent', sans-serif;
@@ -196,6 +196,7 @@ const bell = new Audio('audio/confbth.mp3'); bell.preload = 'auto'; bell.load();
 const seawaves = new Audio ('audio/Seawaves.mp3'); seawaves.preload = 'auto'; seawaves.load();
 const eventTrigger = document.querySelector('.eventTrigger');
 const curtain = document.querySelector('.curtain');
+const layout = document.querySelector ('.layout');
 
 // actions and handlers
 const dismisseventTrigger = () => {
@@ -203,6 +204,7 @@ const dismisseventTrigger = () => {
 };
 const dismissCurtain = () => {
   curtain.classList.add('hidden');
+  layout.classList.add('materialize');
   AFadeOut (seawaves, 3000);
   bell.play();
 };
